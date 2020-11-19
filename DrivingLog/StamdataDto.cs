@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace DrivingLog
 {
-  public class DrivingLogDto
+  public class StamdataDto
   {
     public int Id { get; set; }
-    public string Navn { get; set; }
+    public DateTime Date { get; set; }
     public int killometer { get; set; }
+    public string Name { get; set; }
+    public string LicensePlate { get; set; }
   }
 }

@@ -12,7 +12,7 @@ namespace DrivingLog
 {
   public partial class Form2 : Form
   {
-    private readonly DrivingLogDto _person;
+    private readonly StamdataDto _person;
 
     public Form2()
     {
@@ -20,7 +20,7 @@ namespace DrivingLog
       ok_btn.DialogResult = DialogResult.OK;
     }
 
-    public Form2(DrivingLogDto person) : base()
+    public Form2(StamdataDto person) : base()
     {
       _person = person;
     }

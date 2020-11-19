@@ -12,21 +12,21 @@ namespace DrivingLog
 {
   public partial class Form1 : Form
   {
-    List<DrivingLogDto> _personer = new List<DrivingLogDto>()
+    List<StamdataDto> _personer = new List<StamdataDto>()
       {
-        new DrivingLogDto { Id = 1, Navn = "Steve", killometer = 1000 },
-        new DrivingLogDto { Id = 2, Navn = "Daniel", killometer = 256 },
-        new DrivingLogDto { Id = 3, Navn = "Jesper", killometer = 98 },
-        new DrivingLogDto { Id = 4, Navn = "Sara", killometer = 56 }
+        new StamdataDto { Id = 1, Name = "Steve", killometer = 1000 },
+        new StamdataDto { Id = 2, Name = "Daniel", killometer = 256 },
+        new StamdataDto { Id = 3, Name = "Jesper", killometer = 98 },
+        new StamdataDto { Id = 4, Name = "Sara", killometer = 56 }
       };
 
     public Form1()
     {
       InitializeComponent();
 
-      dataGridView1.DataSource = /*new BindingSource8*/new BindingList<DrivingLogDto>(_personer)/*, $"")*/;
+      dataGridView1.DataSource = /*new BindingSource8*/new BindingList<StamdataDto>(_personer)/*, $"")*/;
       
-      dataGridView1.Columns[$"{nameof(DrivingLogDto.Id)}"].Visible = false;
+      dataGridView1.Columns[$"{nameof(StamdataDto.Id)}"].Visible = false;
 
       DataGridViewButtonColumn Delete = new DataGridViewButtonColumn()
       {
@@ -80,9 +80,9 @@ namespace DrivingLog
         var result = MessageBox.Show(message, Caption, MessageBoxButtons.OKCancel);
         if(result == DialogResult.OK)
         {
-         var row = this.dataGridView1.SelectedRows[e.RowIndex];
+          //var row = this.dataGridView1.SelectedRows[e.RowIndex];
 
-          
+          //var row2 = this.dataGridView1.Rows[e.RowIndex] as StamdataDto;
         }
       }
 
