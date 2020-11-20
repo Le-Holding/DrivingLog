@@ -12,17 +12,13 @@ namespace DrivingLog
 {
   public partial class Form2 : Form
   {
-    private readonly StamdataDto _person;
+    private readonly StamdataDto _dto;
 
-    public Form2()
+    public Form2(StamdataDto dto)
     {
       InitializeComponent();
       ok_btn.DialogResult = DialogResult.OK;
-    }
-
-    public Form2(StamdataDto person) : base()
-    {
-      _person = person;
+      _dto = dto;
     }
 
     private void InitializeMyButton()
