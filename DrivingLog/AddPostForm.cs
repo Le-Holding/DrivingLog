@@ -10,22 +10,27 @@ using System.Windows.Forms;
 
 namespace DrivingLog
 {
-  public partial class Form2 : Form
+  public partial class AddPostForm : Form
   {
     private readonly EmployeeStamdataDto _dto;
 
-    public Form2(EmployeeStamdataDto dto)
+    [Obsolete("Designer only", true)]
+    public AddPostForm() { }
+
+    public AddPostForm(EmployeeStamdataDto dto)
     {
       InitializeComponent();
-      _dto = dto;
       this.FormClosing += Form2_FormClosing;
+      _dto = dto;
     }
 
     private void Form2_FormClosing(object sender, FormClosingEventArgs e)
     {
-      
+      MyNewProperty.EmployeeId = _dto.Id;
+      MyNewProperty.Date = dateTimePickerDate.Value;
+      MyNewProperty.DriversTask = textBoxName.Text;
     }
-
+    public DrivingLogDto MyNewProperty { get; set; }
     private void InitializeMyButton()
     {
       // Create and initialize a Button.

@@ -43,7 +43,7 @@
       this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
       this.dataGridView1.Location = new System.Drawing.Point(40, 38);
       this.dataGridView1.Name = "dataGridView1";
-      this.dataGridView1.Size = new System.Drawing.Size(697, 330);
+      this.dataGridView1.Size = new System.Drawing.Size(615, 330);
       this.dataGridView1.TabIndex = 0;
       // 
       // stamdataDtoBindingSource
@@ -53,9 +53,9 @@
       // dataGridView2
       // 
       this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-      this.dataGridView2.Location = new System.Drawing.Point(796, 38);
+      this.dataGridView2.Location = new System.Drawing.Point(709, 38);
       this.dataGridView2.Name = "dataGridView2";
-      this.dataGridView2.Size = new System.Drawing.Size(376, 330);
+      this.dataGridView2.Size = new System.Drawing.Size(463, 330);
       this.dataGridView2.TabIndex = 1;
       // 
       // btnCreateNewUser

@@ -8,7 +8,7 @@ namespace DrivingLog
 {
   public partial class Form1 : Form
   {
-    private Model _model;
+    private readonly Model _model;
 
     //https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.bindinglist-1?view=net-5.0
     //Declare Binding variables for our gridViewData
@@ -71,11 +71,11 @@ namespace DrivingLog
 
     private void Form1_Load(object sender, EventArgs e)
     {
-      SetBindingsAndGridView();      
+      SetBindingsAndMainGridView();      
       SetEvents();
     }
 
-    private void SetBindingsAndGridView()
+    private void SetBindingsAndMainGridView()
     {
       _bindingList = new BindingList<EmployeeStamdataDto>(_model.GetPersons);
       _bindingSource = new BindingSource(_bindingList, $"");
@@ -90,41 +90,41 @@ namespace DrivingLog
 
     private void SetEvents()
     {
-      this.dataGridView1.CellContentClick += new DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+      this.dataGridView1.CellContentClick += new DataGridViewCellEventHandler(this.DataGridView1_CellContentClick);
       this.dataGridView1.SelectionChanged += DataGridView1_SelectionChanged;
       dataGridView1.CellClick += DataGridView1_CellClick;
     }
 
     private void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
      {
-      var grid = (DataGridView)sender;
-
-      if (grid == null) return;
-
       #region Note: Casting an object
       // Since DataBoundItem is return as an object, we need to a type cast the return object to its orginale (form)/Type
       // This Casting is called an explicit casting, which means we have to do it manually.               * Sidenote: Implicit Casting is don automatically *
       #endregion
 
-      var dto = (EmployeeStamdataDto)grid.CurrentRow.DataBoundItem;
+      DataGridView grid = (DataGridView)sender;
+
+      if (grid == null) return;
+
+      EmployeeStamdataDto dto = (EmployeeStamdataDto) grid.CurrentRow.DataBoundItem;
 
       SetSubGrid(dto);
 
 
       if (e.ColumnIndex == dataGridView1.Columns[BtnColumnNames.Add_column].Index)
       {
-        Form2 view = new Form2(dto);
+        AddPostForm view = new AddPostForm(dto);
 
         if (view.ShowDialog(this) == DialogResult.OK)
         {
-
+          //view.
         }
         view.Dispose();
       }
 
       if (e.ColumnIndex == dataGridView1.Columns[BtnColumnNames.Edit_column].Index)
       {
-        Form2 view = new Form2(dto);
+        EditPostForm view = new EditPostForm(dto);
 
         if (view.ShowDialog(this) == DialogResult.OK)
         {
@@ -153,10 +153,13 @@ namespace DrivingLog
       _subBindingSource = new BindingSource(_subBindingList, $"");
 
       dataGridView2.DataSource = _subBindingSource;
-      this._subBindingSource.ResetBindings(true);
+      dataGridView2.Columns[nameof(DrivingLogDto.Id)].Visible = false;
+      dataGridView2.Columns[nameof(DrivingLogDto.EmployeeId)].Visible = false;
+      dataGridView2.AutoResizeColumns();
+      _subBindingSource.ResetBindings(true);
     }
 
-    private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+    private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
     {
       var grid = (DataGridView)sender;
 
