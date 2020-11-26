@@ -28,8 +28,11 @@
     /// </summary>
     private void InitializeComponent()
     {
+      this.components = new System.ComponentModel.Container();
       this.dataGridView1 = new System.Windows.Forms.DataGridView();
+      this.stamdataDtoBindingSource = new System.Windows.Forms.BindingSource(this.components);
       ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.stamdataDtoBindingSource)).BeginInit();
       this.SuspendLayout();
       // 
       // dataGridView1
@@ -39,6 +42,10 @@
       this.dataGridView1.Name = "dataGridView1";
       this.dataGridView1.Size = new System.Drawing.Size(374, 261);
       this.dataGridView1.TabIndex = 0;
+      // 
+      // stamdataDtoBindingSource
+      // 
+      this.stamdataDtoBindingSource.DataSource = typeof(DrivingLog.StamdataDto);
       // 
       // Form1
       // 
@@ -50,6 +57,7 @@
       this.Text = "Form1";
       this.Load += new System.EventHandler(this.Form1_Load);
       ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.stamdataDtoBindingSource)).EndInit();
       this.ResumeLayout(false);
 
     }
@@ -57,6 +65,7 @@
     #endregion
 
     private System.Windows.Forms.DataGridView dataGridView1;
+    private System.Windows.Forms.BindingSource stamdataDtoBindingSource;
   }
 }
 
