@@ -12,13 +12,18 @@ namespace DrivingLog
 {
   public partial class Form2 : Form
   {
-    private readonly StamdataDto _dto;
+    private readonly EmployeeStamdataDto _dto;
 
-    public Form2(StamdataDto dto)
+    public Form2(EmployeeStamdataDto dto)
     {
       InitializeComponent();
-      ok_btn.DialogResult = DialogResult.OK;
       _dto = dto;
+      this.FormClosing += Form2_FormClosing;
+    }
+
+    private void Form2_FormClosing(object sender, FormClosingEventArgs e)
+    {
+      
     }
 
     private void InitializeMyButton()
@@ -31,6 +36,18 @@ namespace DrivingLog
 
       // Add the button to the form.
       Controls.Add(button1);
+    }
+
+    private void BtnOk(object sender, EventArgs e)
+    {
+      this.DialogResult = DialogResult.OK;
+      this.Close();
+    }
+
+    private void BtnAnunuller(object sender, EventArgs e)
+    {
+      this.DialogResult = DialogResult.Cancel;
+      this.Close();
     }
   }
 }
