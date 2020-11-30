@@ -10,6 +10,7 @@ namespace DrivingLog
   {
     public Model()
     {
+      
       //SetTestDataForPropertyFieltKilometerAbsValue(Persons);
     }
 
@@ -18,13 +19,20 @@ namespace DrivingLog
     //  return Persons;
     //}
     //Dummmy Data for test
-    public List<EmployeeStamdataDto> GetPersons { get; set; } = new List<EmployeeStamdataDto>() 
+    public List<EmployeeStamdataDto> GetPersons()
     {
+      var dto = new List<EmployeeStamdataDto>()
+      {
         new EmployeeStamdataDto { Id = 1, Name = "Steve", LicensePlate = "CP86028", Date = new DateTime(2020, 08, 1), KilometersPrTrip = new List<DrivingLogDto>() },
           new EmployeeStamdataDto { Id = 2, Name = "Daniel", LicensePlate = "AR86028", Date = new DateTime(2020, 01, 1), KilometersPrTrip = new List<DrivingLogDto>()},
           new EmployeeStamdataDto { Id = 3, Name = "Jesper", LicensePlate = "BK08022", Date = new DateTime(2019, 05, 25), KilometersPrTrip = new List<DrivingLogDto>()},
           new EmployeeStamdataDto { Id = 4, Name = "Sara", LicensePlate = "BA09455", Date = new DateTime(2015, 12, 30), KilometersPrTrip = new List<DrivingLogDto>()}
-        };
+      };
+
+      dto.ForEach(x => x.DeepCopy = x.SetDeepCopy());
+
+    return dto;
+    }
 
     public List<DrivingLogDto> EmployeeDrivingLog { get; set; } = new List<DrivingLogDto>()
     {

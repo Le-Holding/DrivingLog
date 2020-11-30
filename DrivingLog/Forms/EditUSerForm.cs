@@ -10,17 +10,17 @@ using System.Windows.Forms;
 
 namespace DrivingLog
 {
-  public partial class EditPostForm : AddPostForm
+  public partial class EditUserForm : AddPostForm
   {
     private readonly EmployeeStamdataDto _dto;
 
     [Obsolete("Designer only", true)]
-    public EditPostForm() : base()
+    public EditUserForm() : base()
     {
 
     }
 
-    public EditPostForm(EmployeeStamdataDto dto) : base(dto)
+    public EditUserForm(EmployeeStamdataDto dto) : base(dto)
     {
       InitializeComponent();
       _dto = dto;

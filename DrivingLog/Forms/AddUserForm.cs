@@ -26,11 +26,11 @@ namespace DrivingLog
 
     private void Form2_FormClosing(object sender, FormClosingEventArgs e)
     {
-      MyNewProperty.EmployeeId = _dto.Id;
-      MyNewProperty.Date = dateTimePickerDate.Value;
-      MyNewProperty.DriversTask = textBoxName.Text;
+      _dto.Date = dateTimePickerDate.Value;
+      _dto.Name = textBoxName.Text;
+      _dto.LicensePlate = textBoxLicensePlate.Text;
     }
-    public DrivingLogDto MyNewProperty { get; set; }
+    public EmployeeStamdataDto MyNewProperty { get; set; }
     private void InitializeMyButton()
     {
       // Create and initialize a Button.
@@ -53,6 +53,11 @@ namespace DrivingLog
     {
       this.DialogResult = DialogResult.Cancel;
       this.Close();
+    }
+
+    private void AddPostForm_Load(object sender, EventArgs e)
+    {
+      this.Text = "Create User";
     }
   }
 }
