@@ -34,7 +34,7 @@ namespace DrivingLog
       //MyNewProperty.Date = dateTimePickerDate.Value;
       //MyNewProperty.DriversTask = textBoxName.Text;
     }
-    public DrivingLogDto MyNewProperty { get; set; }
+    public EmployeeStamdataDto MyNewProperty { get; set; }
     private void InitializeMyButton()
     {
       // Create and initialize a Button.
@@ -57,6 +57,11 @@ namespace DrivingLog
     {
       this.DialogResult = DialogResult.Cancel;
       this.Close();
+    }
+
+    private void AddPostForm_Load(object sender, EventArgs e)
+    {
+      this.Text = "Create User";
     }
   }
 }

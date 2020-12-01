@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
+//using System.serialization;
 
 namespace DrivingLog
 {
@@ -14,5 +17,6 @@ namespace DrivingLog
     public int kilometersAbsValue { get; set; }
     public string Name { get; set; }
     public string LicensePlate { get; set; }
+    public EmployeeStamdataDto DeepCopy { get; set; }
   }
 }

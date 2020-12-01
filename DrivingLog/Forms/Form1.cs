@@ -9,6 +9,8 @@ namespace DrivingLog
   public partial class Form1 : Form
   {
     private readonly Model _model;
+    private readonly List<EmployeeStamdataDto> _dtos;
+
 
     //https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.bindinglist-1?view=net-5.0
     //Declare Binding variables for our gridViewData
@@ -66,7 +68,8 @@ namespace DrivingLog
     {
       InitializeComponent();
       this.Text = "Kørsels log (Kørselsbog).";
-      _model = new Model();      
+      _model =  new Model();
+      _dtos = _model.GetPersons();
     }
 
     private void Form1_Load(object sender, EventArgs e)
@@ -77,7 +80,7 @@ namespace DrivingLog
 
     private void SetBindingsAndMainGridView()
     {
-      _bindingList = new BindingList<EmployeeStamdataDto>(_model.GetPersons);
+      _bindingList = new BindingList<EmployeeStamdataDto>(_dtos);
       _bindingSource = new BindingSource(_bindingList, $"");
       
       dataGridView1.DataSource = _bindingSource;
@@ -124,7 +127,7 @@ namespace DrivingLog
 
       if (e.ColumnIndex == dataGridView1.Columns[BtnColumnNames.Edit_column].Index)
       {
-        EditPostForm view = new EditPostForm(dto);
+        EditUserForm view = new EditUserForm(dto);
 
         if (view.ShowDialog(this) == DialogResult.OK)
         {
@@ -180,6 +183,30 @@ namespace DrivingLog
       //dataGridView1.SelectedRows;
       //dataGridView1.DataBindings;
 
+    }
+
+    private void btnCreateNewUser_Click(object sender, EventArgs e)
+    {
+      EmployeeStamdataDto temp = new EmployeeStamdataDto();
+      AddPostForm view = new AddPostForm(temp);
+
+      if (view.ShowDialog(this) == DialogResult.OK)
+      {
+        //view.
+      }
+      view.Dispose();
+    }
+
+    private void button1_Click(object sender, EventArgs e)
+    {
+      
+      EditUserForm view = new EditUserForm(_dtos.FirstOrDefault() ?? new EmployeeStamdataDto());
+
+      if (view.ShowDialog(this) == DialogResult.OK)
+      {
+
+      }
+      view.Dispose();
     }
   }
 }

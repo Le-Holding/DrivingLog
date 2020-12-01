@@ -63,7 +63,7 @@
       // dateTimePickerDate
       // 
       this.dateTimePickerDate.Location = new System.Drawing.Point(125, 23);
-      this.dateTimePickerDate.Name = "textBoxDate";
+      this.dateTimePickerDate.Name = "dateTimePickerDate";
       this.dateTimePickerDate.Size = new System.Drawing.Size(216, 20);
       this.dateTimePickerDate.TabIndex = 2;
       // 
@@ -101,10 +101,10 @@
       this.labelLicensPlade.TabIndex = 7;
       this.labelLicensPlade.Text = "Nummerplade";
       // 
-      // textBoxLicensPlade
+      // textBoxLicensePlate
       // 
       this.textBoxLicensePlate.Location = new System.Drawing.Point(125, 75);
-      this.textBoxLicensePlate.Name = "textBoxLicensPlade";
+      this.textBoxLicensePlate.Name = "textBoxLicensePlate";
       this.textBoxLicensePlate.Size = new System.Drawing.Size(216, 20);
       this.textBoxLicensePlate.TabIndex = 6;
       // 
@@ -141,6 +141,7 @@
       this.Controls.Add(this.ok_btn);
       this.Name = "AddPostForm";
       this.Text = "Form2";
+      this.Load += new System.EventHandler(this.AddPostForm_Load);
       this.ResumeLayout(false);
       this.PerformLayout();
 

@@ -1,6 +1,6 @@
 ﻿namespace DrivingLog
 {
-  partial class EditPostForm
+  partial class EditUserForm
   {
     /// <summary>
     /// Required designer variable.
@@ -30,13 +30,13 @@
     {
       this.SuspendLayout();
       // 
-      // EditPostForm
+      // EditUserForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(475, 322);
-      this.Name = "EditPostForm";
-      this.Text = "EditPost";
+      this.Name = "EditUserForm";
+      this.Text = "Edit user";
       this.Load += new System.EventHandler(this.EditPostForm_Load);
       this.ResumeLayout(false);
 
