@@ -14,7 +14,7 @@ namespace DrivingLog
   {
     private readonly EmployeeStamdataDto _dto;
 
-    [Obsolete("Designer only", true)]
+    [Obsolete("Designer only", true)] //Er nødvending for designer 
     public AddPostForm() { }
 
     public AddPostForm(EmployeeStamdataDto dto)
@@ -26,9 +26,13 @@ namespace DrivingLog
 
     private void Form2_FormClosing(object sender, FormClosingEventArgs e)
     {
-      MyNewProperty.EmployeeId = _dto.Id;
-      MyNewProperty.Date = dateTimePickerDate.Value;
-      MyNewProperty.DriversTask = textBoxName.Text;
+      var form = (Form)sender;
+      
+      if (e.CloseReason != CloseReason.FormOwnerClosing) return ;
+
+      //MyNewProperty.EmployeeId = _dto.Id;
+      //MyNewProperty.Date = dateTimePickerDate.Value;
+      //MyNewProperty.DriversTask = textBoxName.Text;
     }
     public DrivingLogDto MyNewProperty { get; set; }
     private void InitializeMyButton()
