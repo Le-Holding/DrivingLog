@@ -67,16 +67,37 @@ namespace DrivingLog
       }
     }
 
-    public int CreatePersons(List<EmployeeStamdataDto> persons)
+    public int CreatePersons(EmployeeStamdataDto dto)
     {
       int id = -1;
       return id;
     }
 
-    public int EditPersons(List<EmployeeStamdataDto> persons)
+    public int EditPersons(EmployeeStamdataDto dto)
     {
       int id = -1;
       return id;
+    }
+
+    public void DeleteEmployee(int id) 
+    { 
+    
+    }
+
+    public int AddDrivingLog(DrivingLogDto dto)
+    {
+      int id = -1;
+      return id;
+    }
+
+    public void DeleteCurrentDrivingLog(int id)
+    {
+
+    }
+
+    public void DeleteAllDriverLogsForCurrentEmployee(int employeeId)
+    {
+
     }
   }
 }

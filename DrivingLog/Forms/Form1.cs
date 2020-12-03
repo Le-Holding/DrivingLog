@@ -143,6 +143,7 @@ namespace DrivingLog
         var result = MessageBox.Show(message, Caption, MessageBoxButtons.OKCancel);
         if (result == DialogResult.OK)
         {
+          _model.DeleteEmployee(dto.Id);
           //var row = this.dataGridView1.SelectedRows[e.RowIndex];
 
           //var row2 = this.dataGridView1.Rows[e.RowIndex] as StamdataDto;
@@ -171,8 +172,6 @@ namespace DrivingLog
       //if (dataGridView1.CurrentCell == null || dataGridView1.CurrentCell.Value == null || e.RowIndex == -1) return;
 
       var dto = (EmployeeStamdataDto)grid.CurrentRow.DataBoundItem;
-
-
 
       //_bindingSource.DataSource;
       _bindingSource.ResetBindings(false);
