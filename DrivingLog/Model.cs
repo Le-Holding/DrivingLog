@@ -35,7 +35,7 @@ namespace DrivingLog
       // Sætter summen for den samlede distancen
       EmployeeDrivingLog.ForEach(y => dto
         .Where(x => x.Id == y.EmployeeId)             //For hver medarbejder gruppere deres kørselslogs i en list. 
-        .ToList()                                     
+        .ToList()
         .ForEach(x => x.kilometerSum += y.Distance)); //For hver medarbejder/EmployeeStamdataDto.kilometerSum summer de kørte Distance 
 
       dto.ForEach(x => x.DeepCopy = x.SetDeepCopy());
@@ -68,22 +68,32 @@ namespace DrivingLog
 
       return dto.OrderBy(x => x.Name).ToList();
     }
+    private List<DrivingLogDto> _employeeDrivingLog;
 
-    public List<DrivingLogDto> EmployeeDrivingLog { get; set; } = new List<DrivingLogDto>()
+    public List<DrivingLogDto> EmployeeDrivingLog
     {
-      new DrivingLogDto {Id =  1, EmployeeId = 1, Date = DateTime.UtcNow,  Distance = 10,   DriversTask = "TEC Hvidovre"},
-      new DrivingLogDto {Id =  2, EmployeeId = 1, Date = DateTime.Now,     Distance = 300,  DriversTask = "AU Aarhus"},
-      new DrivingLogDto {Id =  3, EmployeeId = 1, Date = DateTime.UtcNow,  Distance = 96,   DriversTask = "Tec Ballerup"},
-      new DrivingLogDto {Id =  4, EmployeeId = 2, Date = DateTime.Now,     Distance = 10,   DriversTask = "DTU Lyngby"},
-      new DrivingLogDto {Id =  5, EmployeeId = 2, Date = DateTime.UtcNow,  Distance = 200,  DriversTask = "DTU Aarhus"},
-      new DrivingLogDto {Id =  6, EmployeeId = 2, Date = DateTime.Now,     Distance = 100,  DriversTask = "Tec Ballerup"},
-      new DrivingLogDto {Id =  7, EmployeeId = 3, Date = DateTime.UtcNow,  Distance = 400,  DriversTask = "AAU AAlBorg"},
-      new DrivingLogDto {Id =  8, EmployeeId = 3, Date = DateTime.Now,     Distance = 1398, DriversTask = "Gardasøen Italien"},
-      new DrivingLogDto {Id =  9, EmployeeId = 3, Date = DateTime.UtcNow,  Distance = 1216, DriversTask = "Paris"},
-      new DrivingLogDto {Id = 10, EmployeeId = 4, Date = DateTime.Now,     Distance = 1895, DriversTask = "Rom"},
-      new DrivingLogDto {Id = 11, EmployeeId = 4, Date = DateTime.UtcNow,  Distance = 1895, DriversTask = "Tec Ballerup"},
-      new DrivingLogDto {Id = 12, EmployeeId = 4, Date = DateTime.Now,     Distance = 3006, DriversTask = "Málaga"},
-    };
+      get
+      {
+        //singleton Pattern
+        if (_employeeDrivingLog == null) _employeeDrivingLog = new List<DrivingLogDto>()
+        {
+          new DrivingLogDto {Id =  1, EmployeeId = 1, Date = DateTime.UtcNow,  Distance = 10,   DriversTask = "TEC Hvidovre"},
+          new DrivingLogDto {Id =  2, EmployeeId = 1, Date = DateTime.Now,     Distance = 300,  DriversTask = "AU Aarhus"},
+          new DrivingLogDto { Id = 3, EmployeeId = 1, Date = DateTime.UtcNow, Distance = 96, DriversTask = "Tec Ballerup" },
+          new DrivingLogDto { Id = 4, EmployeeId = 2, Date = DateTime.Now, Distance = 10, DriversTask = "DTU Lyngby" },
+          new DrivingLogDto { Id = 5, EmployeeId = 2, Date = DateTime.UtcNow, Distance = 200, DriversTask = "DTU Aarhus" },
+          new DrivingLogDto { Id = 6, EmployeeId = 2, Date = DateTime.Now, Distance = 100, DriversTask = "Tec Ballerup" },
+          new DrivingLogDto { Id = 7, EmployeeId = 3, Date = DateTime.UtcNow, Distance = 400, DriversTask = "AAU AAlBorg" },
+          new DrivingLogDto { Id = 8, EmployeeId = 3, Date = DateTime.Now, Distance = 1398, DriversTask = "Gardasøen Italien" },
+          new DrivingLogDto { Id = 9, EmployeeId = 3, Date = DateTime.UtcNow, Distance = 1216, DriversTask = "Paris" },
+          new DrivingLogDto { Id = 10, EmployeeId = 4, Date = DateTime.Now, Distance = 1895, DriversTask = "Rom" },
+          new DrivingLogDto { Id = 11, EmployeeId = 4, Date = DateTime.UtcNow, Distance = 1895, DriversTask = "Tec Ballerup" },
+          new DrivingLogDto { Id = 12, EmployeeId = 4, Date = DateTime.Now, Distance = 3006, DriversTask = "Málaga" },
+        };
+        return _employeeDrivingLog;
+      }
+      set => _employeeDrivingLog = value;
+    }
 
     private int GetSumOfProduct(List<int> collection)
     {
