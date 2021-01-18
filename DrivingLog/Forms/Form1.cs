@@ -25,28 +25,29 @@ namespace DrivingLog
       var add = new DataGridViewButtonColumn()
       {
         Name = BtnColumnNames.Add_column,
-        HeaderText = "Add",
-        Text = "Add",
-        UseColumnTextForButtonValue = true
-      };
-
-      var delete = new DataGridViewButtonColumn()
-      {
-        Name = nameof(BtnColumnNames.Delete_column),
-        HeaderText = "Delete",
-        Text = "Delete",
+        HeaderText = "Kørsel",
+        Text = "Tilføj log",
         UseColumnTextForButtonValue = true
       };
 
       var edit = new DataGridViewButtonColumn()
       {
         Name = BtnColumnNames.Edit_column,
-        HeaderText = "Edit",
-        Text = "Edit",
+        HeaderText = "Rediger bruger",
+        Text = "Rediger",
         UseColumnTextForButtonValue = true
       };
 
-      var btn = new DataGridViewButtonColumn[] { add, delete, edit };
+
+      var delete = new DataGridViewButtonColumn()
+      {
+        Name = BtnColumnNames.Delete_column,
+        HeaderText = "Slet bruger",
+        Text = "Delete",
+        UseColumnTextForButtonValue = true
+      };
+
+      var btn = new DataGridViewButtonColumn[] { add, edit, delete };
       return btn;
 
       #region Eksemple på at oprettet en liste 
@@ -74,28 +75,41 @@ namespace DrivingLog
 
     private void Form1_Load(object sender, EventArgs e)
     {
-      SetBindingsAndMainGridView();      
+      dataGridView1SetBindings();
+      DataGidView1SetColums();
       SetEvents();
+      _bindingSource.ResetBindings(false);
     }
 
-    private void SetBindingsAndMainGridView()
+    private void dataGridView1SetBindings()
     {
       _bindingList = new BindingList<EmployeeStamdataDto>(_dtos);
       _bindingSource = new BindingSource(_bindingList, $"");
-      
-      dataGridView1.DataSource = _bindingSource;
-      
-      this.dataGridView1.Columns[nameof(EmployeeStamdataDto.Id)].Visible = false;
-      this.dataGridView1.Columns.AddRange(DataGridViewButtonColumns());
-      this.dataGridView1.AutoResizeColumns(/*DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader*/);
-      this._bindingSource.ResetBindings(true);
+      dataGridView1.DataSource = _bindingSource;     
+    }
+
+    private void DataGidView1SetColums()
+    {
+      dataGridView1.Columns[nameof(EmployeeStamdataDto.Id)].Visible = false;
+      dataGridView1.Columns[nameof(EmployeeStamdataDto.DeepCopy)].Visible = false;
+
+      dataGridView1.Columns[nameof(EmployeeStamdataDto.Date)].HeaderText = "Dato";
+      dataGridView1.Columns[nameof(EmployeeStamdataDto.kilometerSum)].HeaderText = "km i alt";
+      dataGridView1.Columns[nameof(EmployeeStamdataDto.Name)].HeaderText = "Navn";
+      dataGridView1.Columns[nameof(EmployeeStamdataDto.LicensePlate)].HeaderText = "Nummerplade";
+
+      dataGridView1.Columns[nameof(EmployeeStamdataDto.kilometerSum)].ReadOnly = true;
+
+      dataGridView1.Columns.AddRange(DataGridViewButtonColumns());
+
+      dataGridView1.AutoResizeColumns(/*DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader*/);
     }
 
     private void SetEvents()
     {
       this.dataGridView1.CellContentClick += new DataGridViewCellEventHandler(this.DataGridView1_CellContentClick);
       this.dataGridView1.SelectionChanged += DataGridView1_SelectionChanged;
-      dataGridView1.CellClick += DataGridView1_CellClick;
+      this.dataGridView1.CellClick += DataGridView1_CellClick;
     }
 
     private void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -135,32 +149,52 @@ namespace DrivingLog
         }
         view.Dispose();
       }
-      if (e.ColumnIndex == dataGridView1.Columns[BtnColumnNames.Delete_column]?.Index)
+      if (e.ColumnIndex == dataGridView1.Columns[BtnColumnNames.Delete_column].Index)
       {
-        //ColorDialog m = new ColorDialog();
-        var message = string.Format("Ønsker du at slette brugeren {0}?", this.dataGridView1.Rows[e.RowIndex].Cells);
-        var Caption = "Delete";
-        var result = MessageBox.Show(message, Caption, MessageBoxButtons.OKCancel);
-        if (result == DialogResult.OK)
-        {
-          _model.DeleteEmployee(dto.Id);
-          //var row = this.dataGridView1.SelectedRows[e.RowIndex];
+        #region It Is What It Is and As It Is: Using the Is and As Operators in C#
+        //https://www.pluralsight.com/guides/csharp-is-as-operators-is-expressions
+        #endregion
+        //var temp = (EmployeeStamdataDto)(this.dataGridView1.Rows[e.RowIndex].DataBoundItem);
+        var temp2 = this.dataGridView1.Rows[e.RowIndex].DataBoundItem as EmployeeStamdataDto;
 
-          //var row2 = this.dataGridView1.Rows[e.RowIndex] as StamdataDto;
+        var message = string.Format("Ønsker du at slette brugeren {0} {1}?", temp2.Name, dto.Name);
+        var Caption = "Delete";
+
+        if (MessageBox.Show(message, Caption, MessageBoxButtons.OKCancel) == DialogResult.OK)
+        {
+          _model.DeleteEmployee(dto.Id, _dtos);
+          _bindingSource.ResetBindings(false);
         }
       }
     }
 
     private void SetSubGrid(EmployeeStamdataDto stamdataDto)
     {
-      _subBindingList = new BindingList<DrivingLogDto>(_model.EmployeeDrivingLog.Where(x => x.EmployeeId == stamdataDto.Id).ToList());
+      if (stamdataDto != null)
+        _subBindingList = new BindingList<DrivingLogDto>(_model.EmployeeDrivingLog.Where(x => x.EmployeeId == stamdataDto.Id).ToList());
+      else
+        _subBindingList = null; //Hvis vi rammer rækken addNewRow, så har vi ingen kørselsdata vi kan vise fra vores kørselstabel, derfor sættes det = null eller = new BindingList<DrivingLogDto>().
+
       _subBindingSource = new BindingSource(_subBindingList, $"");
 
+      
       dataGridView2.DataSource = _subBindingSource;
+      if (_subBindingList != null)
+      {
+        DataGidView2SetColums();
+      }
+      _subBindingSource.ResetBindings(true);
+    }
+
+    private void DataGidView2SetColums()
+    {
       dataGridView2.Columns[nameof(DrivingLogDto.Id)].Visible = false;
       dataGridView2.Columns[nameof(DrivingLogDto.EmployeeId)].Visible = false;
+
+      dataGridView2.Columns[nameof(DrivingLogDto.Date)].HeaderText = "Dato";
+      dataGridView2.Columns[nameof(DrivingLogDto.DriversTask)].HeaderText = "Opgave";
+      dataGridView2.Columns[nameof(DrivingLogDto.Distance)].HeaderText = "Kørt km";
       dataGridView2.AutoResizeColumns();
-      _subBindingSource.ResetBindings(true);
     }
 
     private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -173,15 +207,11 @@ namespace DrivingLog
 
       var dto = (EmployeeStamdataDto)grid.CurrentRow.DataBoundItem;
 
-      //_bindingSource.DataSource;
       _bindingSource.ResetBindings(false);
     }
 
     private void DataGridView1_SelectionChanged(object sender, EventArgs e)
     {
-      //dataGridView1.SelectedRows;
-      //dataGridView1.DataBindings;
-
     }
 
     private void btnCreateNewUser_Click(object sender, EventArgs e)
