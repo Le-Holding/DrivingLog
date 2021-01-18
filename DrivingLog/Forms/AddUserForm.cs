@@ -14,8 +14,24 @@ namespace DrivingLog
   {
     private readonly EmployeeStamdataDto _dto;
 
-    [Obsolete("Designer only", true)] //Er nødvending for designer 
-    public AddPostForm() { }
+    [Obsolete("Designer only", true)]
+    public AddPostForm()
+    {
+      // Da klassen EditUserForm arver fra denne klasse AddPostForm, er det nødvendingt at sende vores base class videre med denne constructor, da design view'et bruger den for at tegnet vores billede.
+      //Denne base constructor er derfor nødvending for at designer viker i EditUserForm. 
+      //Det er den fordi der arves fra klassen Form, som ikke har nogle input parameret i sin constructor. Den bliver kaldt for at tegne formen/viewet.
+      //https://stackoverflow.com/questions/16325992/how-to-avoid-error-constructor-on-type-mytype-not-found-when-inheriting-a-ba
+
+      //https://stackoverflow.com/questions/38758760/resolve-error-there-is-no-argument-given-that-corresponds-to-required-formal-pa
+      //The form you see in the design view is an actual instance of your base class.
+      //If there is not default constructor, the designer cannot create that instance.
+
+      //You can mark the constructor with the [Obsolete("Designer only", true)], and make it throw an exception if called when not in the designer, to prevent other people from calling it.
+# if DEBUG
+      // https://stackoverflow.com/questions/3788605/if-debug-vs-conditionaldebug
+      throw new Exception("Called when not in the designer, only for the designer to create its instance");
+#endif
+    }
 
     public AddPostForm(EmployeeStamdataDto dto)
     {
@@ -27,8 +43,8 @@ namespace DrivingLog
     private void Form2_FormClosing(object sender, FormClosingEventArgs e)
     {
       var form = (Form)sender;
-      
-      if (e.CloseReason != CloseReason.FormOwnerClosing) return ;
+
+      if (e.CloseReason != CloseReason.FormOwnerClosing) return;
 
       //MyNewProperty.EmployeeId = _dto.Id;
       //MyNewProperty.Date = dateTimePickerDate.Value;
