@@ -77,6 +77,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\DataAccessLayer.cs" />
+    <Compile Include="Repository\IDrivingLogRepository.cs" />
+    <Compile Include="Repository\IEmployeeRepository.cs" />
     <Compile Include="Repository\MySqlConnection.cs" />
     <EmbeddedResource Include="Forms\EditUserForm.resx">
       <DependentUpon>EditUserForm.cs</DependentUpon>
