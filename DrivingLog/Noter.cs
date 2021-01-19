@@ -38,5 +38,9 @@ namespace DrivingLog
 
     //Naming conventions and sql joins 
     //https://www.red-gate.com/simple-talk/blogs/sql-naming-conventions/
+
+    #region anonymous delegate
+    //https://stackoverflow.com/questions/3627840/meaning-of-operator-in-c-if-it-exists
+    #endregion
   }
 }
