@@ -180,7 +180,9 @@ namespace DrivingLog
         //_subBindingList = new BindingList<DrivingLogDto>(_model.EmployeeDrivingLog.Where(x => x.EmployeeId == stamdataDto.Id).ToList());
       }
       else
+      {
         _subBindingList = null; //Hvis vi rammer rækken addNewRow, så har vi ingen kørselsdata vi kan vise fra vores kørselstabel, derfor sættes det = null eller = new BindingList<DrivingLogDto>().
+      }
 
       _subBindingSource = new BindingSource(_subBindingList, $"");
 
