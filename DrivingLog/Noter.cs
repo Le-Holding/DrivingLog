@@ -42,5 +42,16 @@ namespace DrivingLog
     #region anonymous delegate
     //https://stackoverflow.com/questions/3627840/meaning-of-operator-in-c-if-it-exists
     #endregion
+
+    #region Git 
+    // Example list of verbs - first word to use in git commit title #git #commit #title · GitHub
+    // https://gist.github.com/scmx/411f6fea4ee3832806720d536a7d5d8f
+    #endregion
+
+    #region Visual Studio - Clean Code 
+    // How do you auto format code in Visual Studio?
+    // https://stackoverflow.com/questions/5755942/how-do-you-auto-format-code-in-visual-studio
+    // https://docs.microsoft.com/en-us/visualstudio/ide/code-styles-and-code-cleanup?view=vs-2019
+    #endregion
   }
 }
