@@ -21,7 +21,7 @@ namespace DrivingLog
     private BindingSource _subBindingSource;
 
     private DataGridViewButtonColumn[] DataGridViewButtonColumns() //Declare Button variables for our gridViewData
-    {      
+    {
       var add = new DataGridViewButtonColumn()
       {
         Name = BtnColumnNames.Add_column,
@@ -69,7 +69,7 @@ namespace DrivingLog
     {
       InitializeComponent();
       this.Text = "Kørsels log (Kørselsbog).";
-      _model =  new Model();
+      _model = new Model();
       _dtos = _model.GetPersons();
     }
 
@@ -85,7 +85,7 @@ namespace DrivingLog
     {
       _bindingList = new BindingList<EmployeeStamdataDto>(_dtos);
       _bindingSource = new BindingSource(_bindingList, $"");
-      dataGridView1.DataSource = _bindingSource;     
+      dataGridView1.DataSource = _bindingSource;
     }
 
     private void DataGidView1SetColums()
@@ -113,7 +113,7 @@ namespace DrivingLog
     }
 
     private void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
-     {
+    {
       #region Note: Casting an object
       // Since DataBoundItem is return as an object, we need to a type cast the return object to its orginale (form)/Type
       // This Casting is called an explicit casting, which means we have to do it manually.               * Sidenote: Implicit Casting is don automatically *
@@ -123,8 +123,10 @@ namespace DrivingLog
 
       if (grid == null) return;
 
-      EmployeeStamdataDto dto = (EmployeeStamdataDto) grid.CurrentRow.DataBoundItem;
+      EmployeeStamdataDto dto = (EmployeeStamdataDto)grid.CurrentRow.DataBoundItem;
 
+
+      // If (same value as before do not reload subgrid)
       SetSubGrid(dto);
 
 
@@ -171,13 +173,18 @@ namespace DrivingLog
     private void SetSubGrid(EmployeeStamdataDto stamdataDto)
     {
       if (stamdataDto != null)
-        _subBindingList = new BindingList<DrivingLogDto>(_model.EmployeeDrivingLog.Where(x => x.EmployeeId == stamdataDto.Id).ToList());
+      {
+        var userDrivingLogDto = _dtos.Where(x => x.Id == stamdataDto.Id).SelectMany(x => x.KilometersPrTrip.Where(t => t.EmployeeId == stamdataDto.Id));
+
+        _subBindingList = new BindingList<DrivingLogDto>(userDrivingLogDto.ToList());
+        //_subBindingList = new BindingList<DrivingLogDto>(_model.EmployeeDrivingLog.Where(x => x.EmployeeId == stamdataDto.Id).ToList());
+      }
       else
         _subBindingList = null; //Hvis vi rammer rækken addNewRow, så har vi ingen kørselsdata vi kan vise fra vores kørselstabel, derfor sættes det = null eller = new BindingList<DrivingLogDto>().
 
       _subBindingSource = new BindingSource(_subBindingList, $"");
 
-      
+
       dataGridView2.DataSource = _subBindingSource;
       if (_subBindingList != null)
       {
@@ -228,7 +235,7 @@ namespace DrivingLog
 
     private void button1_Click(object sender, EventArgs e)
     {
-      
+
       EditUserForm view = new EditUserForm(_dtos.FirstOrDefault() ?? new EmployeeStamdataDto());
 
       if (view.ShowDialog(this) == DialogResult.OK)

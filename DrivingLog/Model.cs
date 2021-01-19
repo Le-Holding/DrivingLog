@@ -33,41 +33,78 @@ namespace DrivingLog
       };
 
       // Sætter summen for den samlede distancen
-      EmployeeDrivingLog.ForEach(y => dto
-        .Where(x => x.Id == y.EmployeeId)             //For hver medarbejder gruppere deres kørselslogs i en list. 
-        .ToList()
-        .ForEach(x => x.kilometerSum += y.Distance)); //For hver medarbejder/EmployeeStamdataDto.kilometerSum summer de kørte Distance 
+      SetSumOfProduct2(EmployeeDrivingLog, dto);
 
       dto.ForEach(x => x.DeepCopy = x.SetDeepCopy());
 
       return dto.OrderBy(x => x.Name).ToList();
     }
 
+    private void SetSumOfProduct2(List<DrivingLogDto> EmployeeDrivingLog, List<EmployeeStamdataDto> dto)
+    {
+      EmployeeDrivingLog.ForEach(y => dto
+        .Where(x => x.Id == y.EmployeeId)             //For hver medarbejder gruppere deres kørselslogs i en list. 
+        .ToList()
+        .ForEach(x => x.kilometerSum += y.Distance)); //For hver medarbejder/EmployeeStamdataDto.kilometerSum summer de kørte Distance 
+    }
+
     public List<EmployeeStamdataDto> GetPersons2()
     {
-      var dto = new List<EmployeeStamdataDto>()
+      var dtos = new List<EmployeeStamdataDto>()
       {
         #region anonymous delegate -- bliver ikke brugt her --
           //https://stackoverflow.com/questions/3627840/meaning-of-operator-in-c-if-it-exists
         #endregion
 
-        new EmployeeStamdataDto { Id = 1, Name = "Steve", LicensePlate = "CP86028", Date = new DateTime(2020, 08, 1), KilometersPrTrip = new List<DrivingLogDto>(),
-          kilometerSum = GetSumOfProduct(EmployeeDrivingLog.Where(x => x.EmployeeId == 1).Select(x => x.Distance).ToList())
+        new EmployeeStamdataDto { Id = 1, Name = "Steve", LicensePlate = "CP86028", Date = new DateTime(2020, 08, 1)
         },
-        new EmployeeStamdataDto { Id = 2, Name = "Daniel", LicensePlate = "AR86028", Date = new DateTime(2020, 01, 1), KilometersPrTrip = new List<DrivingLogDto>(),
-          kilometerSum = GetSumOfProduct(EmployeeDrivingLog.Where(x => x.EmployeeId == 2).Select(x => x.Distance).ToList())
+        new EmployeeStamdataDto { Id = 2, Name = "Daniel", LicensePlate = "AR86028", Date = new DateTime(2020, 01, 1)
         },
-        new EmployeeStamdataDto { Id = 3, Name = "Jesper", LicensePlate = "BK08022", Date = new DateTime(2019, 05, 25), KilometersPrTrip = new List<DrivingLogDto>(),
-          kilometerSum = GetSumOfProduct(EmployeeDrivingLog.Where(x => x.EmployeeId == 3).Select(x => x.Distance).ToList())
+        new EmployeeStamdataDto { Id = 3, Name = "Jesper", LicensePlate = "BK08022", Date = new DateTime(2019, 05, 25)
         },
-        new EmployeeStamdataDto { Id = 4, Name = "Sara", LicensePlate = "BA09455", Date = new DateTime(2015, 12, 30), KilometersPrTrip = new List<DrivingLogDto>(),
-          kilometerSum = GetSumOfProduct(EmployeeDrivingLog.Where(x => x.EmployeeId == 4).Select(x => x.Distance).ToList())
+        new EmployeeStamdataDto { Id = 4, Name = "Sara", LicensePlate = "BA09455", Date = new DateTime(2015, 12, 30)
         }
       };
-      dto.ForEach(x => x.DeepCopy = x.SetDeepCopy());
 
-      return dto.OrderBy(x => x.Name).ToList();
+      foreach (var item in dtos)
+      {
+        item.KilometersPrTrip = GetSubsetOfAListById(EmployeeDrivingLog, item.Id);
+        item.kilometerSum = GetSumOfProduct(item.KilometersPrTrip.Select(x => x.Distance).ToList());
+        //item.kilometerSum = GetSumOfProduct(EmployeeDrivingLog.Where(x => x.EmployeeId == item.Id).Select(x => x.Distance).ToList());
+      }
+
+
+      dtos.ForEach(x => x.DeepCopy = x.SetDeepCopy());
+
+      return dtos.OrderBy(x => x.Name).ToList();
     }
+
+    private List<DrivingLogDto> GetSubsetOfAListById(List<DrivingLogDto> value, int id)
+    {
+      var t = value.Where(x => x.EmployeeId == id).Select(x => x);
+      return t.ToList();
+    }
+
+    private int GetSumOfProduct(List<int> collection)
+    {
+      var result = 0;
+      foreach (var item in collection)
+      {
+        result += item;
+      }
+      return result;
+    }
+
+    private int GetSumOfProduct2(List<int> collection)
+    {
+      var result = 0;
+      foreach (var item in collection)
+      {
+        result += item;
+      }
+      return result;
+    }
+
     private List<DrivingLogDto> _employeeDrivingLog;
 
     public List<DrivingLogDto> EmployeeDrivingLog
@@ -93,16 +130,6 @@ namespace DrivingLog
         return _employeeDrivingLog;
       }
       set => _employeeDrivingLog = value;
-    }
-
-    private int GetSumOfProduct(List<int> collection)
-    {
-      var result = 0;
-      foreach (var item in collection)
-      {
-        result += item;
-      }
-      return result;
     }
 
     private void GetEmployeeDrivingLog(List<EmployeeStamdataDto> persons)
