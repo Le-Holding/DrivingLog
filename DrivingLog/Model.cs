@@ -10,7 +10,7 @@ namespace DrivingLog
   {
     public Model() { }
 
-    public List<EmployeeStamdataDto> GetPersons()
+    public List<EmployeeStamdataDto> GetPersons2()
     {
       var dto = new List<EmployeeStamdataDto>()
       {
@@ -48,7 +48,7 @@ namespace DrivingLog
         .ForEach(x => x.kilometerSum += y.Distance)); //For hver medarbejder/EmployeeStamdataDto.kilometerSum summer de kørte Distance 
     }
 
-    public List<EmployeeStamdataDto> GetPersons2()
+    public List<EmployeeStamdataDto> GetPersons()
     {
       var dtos = new List<EmployeeStamdataDto>()
       {
