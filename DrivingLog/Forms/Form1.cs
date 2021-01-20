@@ -174,7 +174,7 @@ namespace DrivingLog
     {
       if (stamdataDto != null)
       {
-        var userDrivingLogDto = _dtos.Where(x => x.Id == stamdataDto.Id).SelectMany(x => x.KilometersPrTrip.Where(t => t.EmployeeId == stamdataDto.Id));
+        var userDrivingLogDto = _dtos.Where(x => x.Id == stamdataDto.Id).SelectMany(x => x.DrivingLogObj.Where(t => t.EmployeeId == stamdataDto.Id));
 
         _subBindingList = new BindingList<DrivingLogDto>(userDrivingLogDto.ToList());
         //_subBindingList = new BindingList<DrivingLogDto>(_model.EmployeeDrivingLog.Where(x => x.EmployeeId == stamdataDto.Id).ToList());

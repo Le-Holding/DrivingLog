@@ -36,8 +36,8 @@ namespace DrivingLog.Repository.TestData
     {
       foreach (var item in Persons)
       {
-        item.KilometersPrTrip = _bizz.GetSubsetOfAListById(EmployeeDrivingLog, item.Id);
-        item.kilometerSum = _bizz.GetSumOfProduct(item.KilometersPrTrip.Select(x => x.Distance).ToList());
+        item.DrivingLogObj = _bizz.GetSubsetOfAListById(EmployeeDrivingLog, item.Id);
+        item.kilometerSum = _bizz.GetSumOfProduct(item.DrivingLogObj.Select(x => x.Distance).ToList());
         //item.kilometerSum = GetSumOfProduct(EmployeeDrivingLog.Where(x => x.EmployeeId == item.Id).Select(x => x.Distance).ToList());
       }
 
