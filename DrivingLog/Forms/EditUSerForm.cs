@@ -22,7 +22,7 @@ namespace DrivingLog
 
     private void EditPostForm_Load(object sender, EventArgs e)
     {
-      #region Vi kan ændre på vores textbox felt fra AddPostForm, fordi feltet er sat protected og ikke private og der med giver klasser som arver fra AddPostForm adgang
+      #region Vi kan ændre på vores textbox felt fra AddPostForm, fordi feltet er sat protected og ikke private og der med giver det denne klasser som arver fra AddPostForm adgang til felternerk
       //https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/protected
       #endregion
       dateTimePickerDate.Enabled = false;
