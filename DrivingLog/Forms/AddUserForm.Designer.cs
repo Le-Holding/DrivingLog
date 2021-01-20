@@ -58,7 +58,7 @@
       this.annuller_btn.TabIndex = 1;
       this.annuller_btn.Text = "Annuller";
       this.annuller_btn.UseVisualStyleBackColor = true;
-      this.annuller_btn.Click += new System.EventHandler(this.BtnAnunuller);
+      this.annuller_btn.Click += new System.EventHandler(this.BtnAnnuller);
       // 
       // dateTimePickerDate
       // 

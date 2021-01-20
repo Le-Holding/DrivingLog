@@ -69,7 +69,7 @@ namespace DrivingLog
       this.Close();
     }
 
-    private void BtnAnunuller(object sender, EventArgs e)
+    private void BtnAnnuller(object sender, EventArgs e)
     {
       this.DialogResult = DialogResult.Cancel;
       this.Close();
