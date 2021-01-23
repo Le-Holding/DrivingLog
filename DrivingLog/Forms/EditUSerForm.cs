@@ -14,12 +14,6 @@ namespace DrivingLog
   {
     private readonly EmployeeStamdataDto _dto;
 
-    [Obsolete("Designer only", true)]
-    public EditUserForm() : base()
-    {
-
-    }
-
     public EditUserForm(EmployeeStamdataDto dto) : base(dto)
     {
       InitializeComponent();

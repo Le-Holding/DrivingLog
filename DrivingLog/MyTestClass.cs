@@ -44,9 +44,10 @@ namespace DrivingLog
 
       var temp = JsonConvert.DeserializeObject<T>(json);
 
-      return temp;
       System.Diagnostics.Debug.WriteLine(json);
       System.Diagnostics.Debug.WriteLine(temp);
+
+      return temp;
     }
 
     public static void MyJoinSelect()
