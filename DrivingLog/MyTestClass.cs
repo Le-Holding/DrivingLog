@@ -48,5 +48,11 @@ namespace DrivingLog
       System.Diagnostics.Debug.WriteLine(json);
       System.Diagnostics.Debug.WriteLine(temp);
     }
+
+    public static void MyJoinSelect()
+    {
+    //var myguery
+    //https://docs.microsoft.com/en-us/dotnet/api/system.web.script.serialization.javascriptserializer?redirectedfrom=MSDN&view=netframework-4.8
+    }
   }
 }
