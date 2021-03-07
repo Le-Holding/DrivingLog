@@ -31,5 +31,10 @@ namespace DrivingLog.Repository.TestData
         .ToList()
         .ForEach(x => x.kilometerSum += y.Distance)); //For hver medarbejder/EmployeeStamdataDto.kilometerSum summer de kørte Distance 
     }
+
+    internal int GetNewId(List<int> lists)
+    {
+      return lists.Max() + 1;
+    }
   }
 }
