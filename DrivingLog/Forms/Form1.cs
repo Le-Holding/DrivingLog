@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace DrivingLog
 {
@@ -71,17 +72,20 @@ namespace DrivingLog
       this.Text = "Kørsels log (Kørselsbog).";
       _model = new Model();
       _dtos = _model.GetPersons();
+
+      DataGridView1SetBindings();
+      //dataGridView1.AutoGenerateColumns = true;
     }
 
     private void Form1_Load(object sender, EventArgs e)
     {
-      dataGridView1SetBindings();
+      //DataGridView1SetBindings();
       DataGidView1SetColums();
       SetEvents();
       _bindingSource.ResetBindings(false);
     }
 
-    private void dataGridView1SetBindings()
+    private void DataGridView1SetBindings()
     {
       _bindingList = new BindingList<EmployeeStamdataDto>(_dtos);
       _bindingSource = new BindingSource(_bindingList, $"");
@@ -108,9 +112,82 @@ namespace DrivingLog
     private void SetEvents()
     {
       this.dataGridView1.CellContentClick += new DataGridViewCellEventHandler(this.DataGridView1_CellContentClick);
-      this.dataGridView1.SelectionChanged += DataGridView1_SelectionChanged;
       this.dataGridView1.CellClick += DataGridView1_CellClick;
+      this.dataGridView2.RowLeave += DataGridView2_RowLeave;
+      this.dataGridView1.RowValidating += DataGridView1_RowValidating;
+      this.dataGridView1.RowValidated += DataGridView1_RowValidated;
+      this.dataGridView1.DataSourceChanged += DataGridView1_DataSourceChanged;
     }
+
+    private void DataGridView1_DataSourceChanged(object sender, EventArgs e)
+    {
+      
+    }
+
+    private void DataGridView1_RowValidated(object sender, DataGridViewCellEventArgs e)
+    {
+      var dto = GetEmployeeDtoFromGrid(sender, e) /*?? new EmployeeStamdataDto()*/;
+      if (dto == null) return;
+
+      if (e.RowIndex != dataGridView1.NewRowIndex -1) return;
+      
+    }
+
+    private bool ValidateEmpoyee(EmployeeStamdataDto dto)
+    {
+      return Regex.IsMatch(dto.LicensePlate, "^[A-Za-z]{2}[0-9]{5}");
+      // https://cs.lmu.edu/~ray/notes/regex/
+      // https://regex101.com/
+    }
+
+    private void DataGridView1_RowValidating(object sender, DataGridViewCellCancelEventArgs e)
+    {
+      var dto = GetEmployeeDtoFromGrid(sender, e) /*?? new EmployeeStamdataDto()*/;
+      if (dto == null) return;
+
+      var success = ValidateEmpoyee(dto);
+
+      //Valider ændringer, hvis ingen ændringer brug e.Cancel = true; eller f
+      // If (same value as before do not reload subgrid)
+      SetSubGrid(dto);
+    }
+
+    private EmployeeStamdataDto GetEmployeeDtoFromGrid<T>(object sender, T e)
+    {
+      if (!(e is DataGridViewCellCancelEventArgs != e is DataGridViewCellEventArgs)) return null;
+      //e.Cancel = true;
+      #region Note: Casting an object
+      // Since DataBoundItem is return as an object, we need to a type cast the return object to its orginale (form)/Type
+      // This Casting is called an explicit casting, which means we have to do it manually.               * Sidenote: Implicit Casting is don automatically *
+      #endregion
+
+      DataGridView grid = (DataGridView)sender;
+
+      if (grid == null) return null;
+
+      var dto = (EmployeeStamdataDto)grid.CurrentRow.DataBoundItem /*?? new EmployeeStamdataDto()*/;
+      currentSelectedEmployeeDto = dto;
+
+      return dto;
+    }
+
+    private void DataGridView2_RowLeave(object sender, DataGridViewCellEventArgs e)
+    {
+      AddNewDrivingLog(sender, e);
+    }
+
+    private void AddNewDrivingLog(object sender, DataGridViewCellEventArgs e)
+    {
+      if (e.RowIndex != dataGridView2.NewRowIndex - 1) return;
+
+      //dataGridView1.SelectedColumns
+      DataGridView grid = (DataGridView)sender;
+      var dto = (DrivingLogDto)grid.CurrentRow.DataBoundItem;
+      dto.EmployeeId = currentSelectedEmployeeDto.Id;
+      _model.CreateNewDrivingLog(dto);
+    }
+
+    private EmployeeStamdataDto currentSelectedEmployeeDto = new EmployeeStamdataDto();
 
     private void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
     {
@@ -119,16 +196,12 @@ namespace DrivingLog
       // This Casting is called an explicit casting, which means we have to do it manually.               * Sidenote: Implicit Casting is don automatically *
       #endregion
 
-      DataGridView grid = (DataGridView)sender;
 
-      if (grid == null) return;
-
-      EmployeeStamdataDto dto = (EmployeeStamdataDto)grid.CurrentRow.DataBoundItem;
+      var dto = GetEmployeeDtoFromGrid(sender, e) /*?? new EmployeeStamdataDto()*/;
+      if (dto == null) return;
 
 
-      // If (same value as before do not reload subgrid)
-      SetSubGrid(dto);
-
+      
 
       if (e.ColumnIndex == dataGridView1.Columns[BtnColumnNames.Add_column].Index)
       {
@@ -172,16 +245,16 @@ namespace DrivingLog
 
     private void SetSubGrid(EmployeeStamdataDto stamdataDto)
     {
-      if (stamdataDto != null)
+      if (stamdataDto != null && stamdataDto.Id != 0)
       {
-        var userDrivingLogDto = _dtos.Where(x => x.Id == stamdataDto.Id).SelectMany(x => x.DrivingLogObj.Where(t => t.EmployeeId == stamdataDto.Id));
+        var userDrivingLogDto = _dtos.Where(x => x.Id == stamdataDto.Id).SelectMany(x => x.DrivingLogObj);
 
         _subBindingList = new BindingList<DrivingLogDto>(userDrivingLogDto.ToList());
         //_subBindingList = new BindingList<DrivingLogDto>(_model.EmployeeDrivingLog.Where(x => x.EmployeeId == stamdataDto.Id).ToList());
       }
       else
       {
-        _subBindingList = null; //Hvis vi rammer rækken addNewRow, så har vi ingen kørselsdata vi kan vise fra vores kørselstabel, derfor sættes det = null eller = new BindingList<DrivingLogDto>().
+        _subBindingList = new BindingList<DrivingLogDto>(); //Hvis vi rammer rækken addNewRow, så har vi ingen kørselsdata vi kan vise fra vores kørselstabel, derfor sættes det = null eller = new BindingList<DrivingLogDto>().
       }
 
       _subBindingSource = new BindingSource(_subBindingList, $"");
@@ -219,9 +292,6 @@ namespace DrivingLog
       _bindingSource.ResetBindings(false);
     }
 
-    private void DataGridView1_SelectionChanged(object sender, EventArgs e)
-    {
-    }
 
     private void btnCreateNewUser_Click(object sender, EventArgs e)
     {
@@ -246,5 +316,13 @@ namespace DrivingLog
       }
       view.Dispose();
     }
+
+    private void stamdataDtoBindingSource_CurrentChanged(object sender, EventArgs e)
+    {
+
+    }
   }
 }
+
+//https://help.syncfusion.com/windowsforms/datagrid/datavalidation
+//https://hangzone.com/transfer-data-efficiently-dtos/
