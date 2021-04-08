@@ -45,6 +45,7 @@ namespace DrivingLog
 
     #region Git 
     // Example list of verbs - first word to use in git commit title #git #commit #title · GitHub
+    // https://chiamakaikeanyi.dev/how-to-write-good-git-commit-messages/
     // https://gist.github.com/scmx/411f6fea4ee3832806720d536a7d5d8f
     #endregion
 
