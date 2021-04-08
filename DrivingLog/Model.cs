@@ -53,5 +53,10 @@ namespace DrivingLog
     {
 
     }
+
+    internal void CreateNewDrivingLog(DrivingLogDto dto)
+    {
+      dto.Id = _data.CreateNewDrivingLogShortHanded(dto);
+    }
   }
 }

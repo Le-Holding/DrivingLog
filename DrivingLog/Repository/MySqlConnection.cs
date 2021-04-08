@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace DrivingLog.Repository
 {
+  /// <summary>
+  /// Initializes a new instance of the <see cref="MySqlConnection"/> class.
+  /// </summary>
   public class MySqlConnection : IEmployeeRepository, IDrivingLogRepository
   {
     //https://docs.microsoft.com/en-us/dotnet/api/system.data.sqlclient.sqlconnection.connectionstring?view=dotnet-plat-ext-5.0

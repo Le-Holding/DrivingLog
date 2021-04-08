@@ -18,7 +18,7 @@ namespace DrivingLog.Repository.TestData
       get
       {
         //singleton Pattern
-        if (_persons == null) 
+        if (_persons == null)
           _persons = new List<EmployeeStamdataDto>()
           {
             new EmployeeStamdataDto { Id = 1, Name = "Jalina", LicensePlate = "CP86028", Date = new DateTime(2020, 08, 01) },
@@ -26,18 +26,55 @@ namespace DrivingLog.Repository.TestData
             new EmployeeStamdataDto { Id = 3, Name = "Kalina", LicensePlate = "BK08022", Date = new DateTime(2019, 05, 25) },
             new EmployeeStamdataDto { Id = 4, Name = "Selina", LicensePlate = "BA09455", Date = new DateTime(2015, 12, 30) }
           };
-        
+
         return _persons;
       }
       set => _persons = value;
     }
 
+    internal int CreateNewDrivingLogShortHanded(DrivingLogDto dto)
+    {
+      var drivinglogDtos = Persons
+        //.Where(person => person.Id == dto.EmployeeId)
+        .SelectMany(person => person.DrivingLogObj)
+        .ToList();
+
+      dto.Id = _bizz.GetNewId(drivinglogDtos.Select(x => x.Id).ToList());
+
+      drivinglogDtos.Add(dto);
+
+      return dto.Id;
+      //throw new NotImplementedException();
+    }
+
+    internal int CreateNewDrivingLogWithForeach(DrivingLogDto dto)
+    {
+      var drivinglogDtos = new List<DrivingLogDto>();
+
+      foreach (var person in Persons)
+      {
+        if (person.Id != dto.EmployeeId) continue;
+
+        foreach (var log in person.DrivingLogObj)
+        {
+          drivinglogDtos.Add(log);
+        }
+      }
+
+      dto.EmployeeId = _bizz.GetNewId(drivinglogDtos.Select(x => x.EmployeeId).ToList());
+
+      drivinglogDtos.Add(dto);
+
+      return dto.EmployeeId;
+    }
+
+
     public List<EmployeeStamdataDto> GetPersons()
     {
       foreach (var item in Persons)
       {
-        item.KilometersPrTrip = _bizz.GetSubsetOfAListById(EmployeeDrivingLog, item.Id);
-        item.kilometerSum = _bizz.GetSumOfProduct(item.KilometersPrTrip.Select(x => x.Distance).ToList());
+        item.DrivingLogObj = _bizz.GetSubsetOfAListById(EmployeeDrivingLog, item.Id);
+        item.kilometerSum = _bizz.GetSumOfProduct(item.DrivingLogObj.Select(x => x.Distance).ToList());
         //item.kilometerSum = GetSumOfProduct(EmployeeDrivingLog.Where(x => x.EmployeeId == item.Id).Select(x => x.Distance).ToList());
       }
 
@@ -54,7 +91,7 @@ namespace DrivingLog.Repository.TestData
       get
       {
         //singleton Pattern
-        if (_employeeDrivingLog == null) 
+        if (_employeeDrivingLog == null)
           _employeeDrivingLog = new List<DrivingLogDto>()
           {
             new DrivingLogDto {Id =  1, EmployeeId = 1, Date = DateTime.UtcNow,  Distance = 10,   DriversTask = "TEC Hvidovre"},
