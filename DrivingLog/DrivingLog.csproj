@@ -82,6 +82,7 @@
     <Compile Include="Repository\IEmployeeRepository.cs" />
     <Compile Include="Repository\MySqlConnection.cs" />
     <Compile Include="Repository\TestData\MyTestData.cs" />
+    <Compile Include="Repository\TestData\RepositoryForTestData.cs" />
     <Compile Include="Repository\TestData\TestDataHelperClass.cs" />
     <EmbeddedResource Include="Forms\EditUserForm.resx">
       <DependentUpon>EditUserForm.cs</DependentUpon>
