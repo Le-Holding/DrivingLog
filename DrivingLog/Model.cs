@@ -9,10 +9,10 @@ namespace DrivingLog
 {
   public class Model
   {
-    private readonly MyTestData _data;
+    private readonly RepositoryForTestData _data;
     public Model() 
     {
-      _data = new MyTestData();
+      _data = new RepositoryForTestData();
     }
 
     public List<EmployeeStamdataDto> GetPersons()

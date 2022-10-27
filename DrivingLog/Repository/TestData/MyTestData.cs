@@ -8,12 +8,10 @@ namespace DrivingLog.Repository.TestData
 {
   public class MyTestData
   {
-    private readonly TestDataHelperClass _bizz;
-    public MyTestData()
-    {
-      _bizz = new TestDataHelperClass();
-    }
-    private List<EmployeeStamdataDto> Persons
+    private List<EmployeeStamdataDto> _persons;
+    private List<DrivingLogDto> _employeeDrivingLog;
+
+    internal List<EmployeeStamdataDto> Persons
     {
       get
       {
@@ -21,9 +19,11 @@ namespace DrivingLog.Repository.TestData
         if (_persons == null)
           _persons = new List<EmployeeStamdataDto>()
           {
-            new EmployeeStamdataDto { Id = 1, Name = "Jalina", LicensePlate = "CP86028", Date = new DateTime(2020, 08, 01) },
-            new EmployeeStamdataDto { Id = 2, Name = "Melina", LicensePlate = "AR86028", Date = new DateTime(2020, 01, 01) },
+            new EmployeeStamdataDto { Id = 1, Name = "A_TestData", LicensePlate = "CP86028", Date = new DateTime(2020, 08, 01) },
+            new EmployeeStamdataDto { Id = 10, Name = "Jalina", LicensePlate = "CP86028", Date = new DateTime(2020, 08, 01) },
             new EmployeeStamdataDto { Id = 3, Name = "Kalina", LicensePlate = "BK08022", Date = new DateTime(2019, 05, 25) },
+            new EmployeeStamdataDto { Id = 2, Name = "Melina", LicensePlate = "AR86028", Date = new DateTime(2020, 01, 01) },
+            new EmployeeStamdataDto { Id = 1, Name = "Oline" , LicensePlate = "JP00700", Date = new DateTime(2020, 08, 01) },
             new EmployeeStamdataDto { Id = 4, Name = "Selina", LicensePlate = "BA09455", Date = new DateTime(2015, 12, 30) }
           };
 
@@ -32,61 +32,7 @@ namespace DrivingLog.Repository.TestData
       set => _persons = value;
     }
 
-    internal int CreateNewDrivingLogShortHanded(DrivingLogDto dto)
-    {
-      var drivinglogDtos = Persons
-        //.Where(person => person.Id == dto.EmployeeId)
-        .SelectMany(person => person.DrivingLogObj)
-        .ToList();
-
-      dto.Id = _bizz.GetNewId(drivinglogDtos.Select(x => x.Id).ToList());
-
-      drivinglogDtos.Add(dto);
-
-      return dto.Id;
-      //throw new NotImplementedException();
-    }
-
-    internal int CreateNewDrivingLogWithForeach(DrivingLogDto dto)
-    {
-      var drivinglogDtos = new List<DrivingLogDto>();
-
-      foreach (var person in Persons)
-      {
-        if (person.Id != dto.EmployeeId) continue;
-
-        foreach (var log in person.DrivingLogObj)
-        {
-          drivinglogDtos.Add(log);
-        }
-      }
-
-      dto.EmployeeId = _bizz.GetNewId(drivinglogDtos.Select(x => x.EmployeeId).ToList());
-
-      drivinglogDtos.Add(dto);
-
-      return dto.EmployeeId;
-    }
-
-
-    public List<EmployeeStamdataDto> GetPersons()
-    {
-      foreach (var item in Persons)
-      {
-        item.DrivingLogObj = _bizz.GetSubsetOfAListById(EmployeeDrivingLog, item.Id);
-        item.kilometerSum = _bizz.GetSumOfProduct(item.DrivingLogObj.Select(x => x.Distance).ToList());
-        //item.kilometerSum = GetSumOfProduct(EmployeeDrivingLog.Where(x => x.EmployeeId == item.Id).Select(x => x.Distance).ToList());
-      }
-
-      Persons.ForEach(x => x.DeepCopy = x.SetDeepCopy());
-
-      return Persons.OrderBy(x => x.Name).ToList();
-    }
-
-    private List<EmployeeStamdataDto> _persons;
-    private List<DrivingLogDto> _employeeDrivingLog;
-
-    public List<DrivingLogDto> EmployeeDrivingLog
+    internal List<DrivingLogDto> EmployeeDrivingLog
     {
       get
       {
@@ -94,8 +40,8 @@ namespace DrivingLog.Repository.TestData
         if (_employeeDrivingLog == null)
           _employeeDrivingLog = new List<DrivingLogDto>()
           {
-            new DrivingLogDto {Id =  1, EmployeeId = 1, Date = DateTime.UtcNow,  Distance = 10,   DriversTask = "TEC Hvidovre"},
-            new DrivingLogDto {Id =  2, EmployeeId = 1, Date = DateTime.Now,     Distance = 300,  DriversTask = "AU Aarhus"},
+            new DrivingLogDto { Id = 1, EmployeeId = 1, Date = DateTime.UtcNow,  Distance = 10,   DriversTask = "TEC Hvidovre"},
+            new DrivingLogDto { Id = 2, EmployeeId = 1, Date = DateTime.Now,     Distance = 300,  DriversTask = "AU Aarhus"},
             new DrivingLogDto { Id = 3, EmployeeId = 1, Date = DateTime.UtcNow, Distance = 96, DriversTask = "Tec Ballerup" },
             new DrivingLogDto { Id = 4, EmployeeId = 2, Date = DateTime.Now, Distance = 10, DriversTask = "DTU Lyngby" },
             new DrivingLogDto { Id = 5, EmployeeId = 2, Date = DateTime.UtcNow, Distance = 200, DriversTask = "DTU Aarhus" },
