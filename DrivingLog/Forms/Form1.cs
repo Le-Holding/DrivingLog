@@ -117,6 +117,12 @@ namespace DrivingLog
       this.dataGridView1.RowValidating += DataGridView1_RowValidating;
       this.dataGridView1.RowValidated += DataGridView1_RowValidated;
       this.dataGridView1.DataSourceChanged += DataGridView1_DataSourceChanged;
+      this.dataGridView1.RowEnter += DataGridView1_RowEnter;
+    }
+
+    private void DataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
+    {
+     // throw new NotImplementedException();
     }
 
     private void DataGridView1_DataSourceChanged(object sender, EventArgs e)

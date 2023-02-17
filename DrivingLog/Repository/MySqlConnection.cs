@@ -30,8 +30,6 @@ namespace DrivingLog.Repository
 
     static private string GetConnectionString()
     {
-      // To avoid storing the connection string in your code,
-      // you can retrieve it from a configuration file.
       return "Data Source=MSSQL1;Initial Catalog=AdventureWorks;" + "Integrated Security=true;";
     }
 
@@ -59,7 +57,7 @@ namespace DrivingLog.Repository
 
           //int affectedRows = cmd.ExecuteNonQuery();
           int modifiedId = (int)cmd.ExecuteScalar();
-          
+
 
           if (con.State == System.Data.ConnectionState.Open)
             con.Close();

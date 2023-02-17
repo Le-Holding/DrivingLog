@@ -14,6 +14,7 @@ namespace DrivingLog.Repository.TestData
     }
 
     private readonly TestDataHelperClass _bizz;
+    
     internal int CreateNewDrivingLogShortHanded(DrivingLogDto dto)
     {
       var drivinglogDtos = Persons
